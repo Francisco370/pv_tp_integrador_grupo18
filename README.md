@@ -4,3 +4,4 @@ Desarrollo Trabajo Practico Integrador
 
 - Sanchez Francisco Ignacio - Usuario: Francisco370
 - Duarte Nicolas Hernan - Usuario: nicoduarte25
+- Puca Benitez Alex - Usuario: Alexrodrigo66
