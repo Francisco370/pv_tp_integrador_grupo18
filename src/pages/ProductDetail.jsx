@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setProductDetail, toggleFavorite } from '../redux/productsSlice';
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { productId } = useParams();
   const dispatch = useDispatch();
   const product = useSelector(state => state.products.selectedProduct);
   const favorites = useSelector(state => state.products.favorites);
@@ -13,7 +13,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+        const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
         const data = await response.json();
         dispatch(setProductDetail(data));
       } catch (error) {
@@ -22,7 +22,12 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-  }, [id, dispatch]);
+
+    // Limpieza al desmontar el componente
+    return () => {
+      dispatch(setProductDetail(null));
+    };
+  }, [productId, dispatch]);
 
   const handleFavoriteToggle = () => {
     if (product) {
