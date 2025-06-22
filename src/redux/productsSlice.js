@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   products: [],     // Productos traídos de la API
   favorites: [],    // Array con IDs de productos favoritos
+  selectedProduct: null, // Producto seleccionado para detalle
 };
 
 const productsSlice = createSlice({
@@ -12,6 +13,11 @@ const productsSlice = createSlice({
     // Guarda los productos obtenidos de la API
     setProducts(state, action) {
       state.products = action.payload;
+    },
+
+    // Guarda el producto seleccionado para detalle
+    setProductDetail(state, action) {
+      state.selectedProduct = action.payload;
     },
 
     // Alterna entre favorito/no favorito
@@ -50,6 +56,7 @@ const productsSlice = createSlice({
 
 export const {
   setProducts,
+  setProductDetail,
   toggleFavorite,
   deleteProduct,
   updateProduct,
