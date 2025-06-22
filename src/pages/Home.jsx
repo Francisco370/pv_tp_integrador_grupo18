@@ -8,18 +8,20 @@ export default function Home() {
   const products = useSelector((state) => state.products.products);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("https://fakestoreapi.com/products");
-        const data = await res.json();
-        dispatch(setProducts(data));
-      } catch (error) {
-        console.error("Error al traer productos:", error);
-      }
-    };
+    if (products.length === 0) {
+      const fetchProducts = async () => {
+        try {
+          const res = await fetch("https://fakestoreapi.com/products");
+          const data = await res.json();
+          dispatch(setProducts(data));
+        } catch (error) {
+          console.error("Error al traer productos:", error);
+        }
+      };
 
-    fetchProducts();
-  }, [dispatch]);
+      fetchProducts();
+    }
+  }, [products.length, dispatch]);
 
   return (
     <div>

@@ -12,7 +12,14 @@ const productsSlice = createSlice({
   reducers: {
     // Guarda los productos obtenidos de la API
     setProducts(state, action) {
-      state.products = action.payload;
+      const apiProducts = action.payload;
+
+      // Filtrar los productos que ya están cargados para no duplicarlos
+      const existingIds = state.products.map(p => p.id);
+      const newApiProducts = apiProducts.filter(p => !existingIds.includes(p.id));
+
+      // Agrega solo los productos nuevos
+      state.products = [...state.products, ...newApiProducts];
     },
 
     // Guarda el producto seleccionado para detalle
