@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../redux/productsSlice";
-import ProductCard from "../components/ProductCard";
+import ProductList from "../components/ProductList";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -21,24 +21,12 @@ export default function Home() {
 
       fetchProducts();
     }
-  }, [products.length, dispatch]);
+  }, [dispatch, products.length]);
 
   return (
     <div>
       <h2 style={{ textAlign: "center" }}>Listado de Productos</h2>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "1rem",
-          justifyContent: "center",
-          marginTop: "2rem",
-        }}
-      >
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      <ProductList products={products} />
     </div>
   );
 }
