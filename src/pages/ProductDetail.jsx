@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductDetail } from '../store/productSlice'; // Ajusta la ruta según tu estructura
-
+import { setProductDetail } from '../../redux/productSlice';  
 const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
