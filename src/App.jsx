@@ -1,3 +1,6 @@
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar.jsx';
 import Home from './pages/Home.jsx'; // Tu página actual con el listado
 import ProductDetail from './pages/ProductDetail.jsx';
 import Favorites from './pages/Favorites.jsx';
