@@ -6,28 +6,34 @@ import { setProductDetail, toggleFavorite } from '../redux/productsSlice';
 const ProductDetail = () => {
   const { productId } = useParams();
   const dispatch = useDispatch();
+
+  const products = useSelector(state => state.products.products);
   const product = useSelector(state => state.products.selectedProduct);
   const favorites = useSelector(state => state.products.favorites);
   const isFavorite = product ? favorites.includes(product.id) : false;
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
-        const data = await response.json();
-        dispatch(setProductDetail(data));
-      } catch (error) {
-        console.error('Error fetching product:', error);
-      }
-    };
+    const prodIdNum = parseInt(productId);
 
-    fetchProduct();
+    // Buscar en el store primero
+    const productFromStore = products.find(p => p.id === prodIdNum);
 
-    // Limpieza al desmontar el componente
-    return () => {
-      dispatch(setProductDetail(null));
-    };
-  }, [productId, dispatch]);
+    if (productFromStore) {
+      dispatch(setProductDetail(productFromStore));
+    } else {
+      // Si no está, hacer fetch a la API
+      const fetchProduct = async () => {
+        try {
+          const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
+          const data = await response.json();
+          dispatch(setProductDetail(data));
+        } catch (error) {
+          console.error('Error fetching product:', error);
+        }
+      };
+      fetchProduct();
+    }
+  }, [productId, dispatch, products]);
 
   const handleFavoriteToggle = () => {
     if (product) {
