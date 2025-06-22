@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductDetail } from '../../redux/productSlice';  
+import { setProductDetail } from '../redux/productsSlice';  
 const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const product = useSelector(state => state.product.selectedProduct);
+  const product = useSelector(state => state.products.selectedProduct);
 
   useEffect(() => {
     const fetchProduct = async () => {
