@@ -49,6 +49,22 @@ export default function ProductCard({ product }) {
           Ver más detalles
         </button>
       </Link>
+      
+      <Link to={`/edit-product/${product.id}`}>
+        <button
+          style={{
+          marginTop: "0.5rem",
+          padding: "0.3rem 0.6rem",
+          cursor: "pointer",
+          borderRadius: "4px",
+          border: "1px solid #28a745",
+          backgroundColor: "#28a745",
+          color: "white",
+      }}
+        >
+        Editar
+        </button>
+      </Link>
 
       <label
         style={{
