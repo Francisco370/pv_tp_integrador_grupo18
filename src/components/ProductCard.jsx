@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../redux/productsSlice";
+import { deleteProduct, toggleFavorite } from "../redux/productsSlice";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product }) {
@@ -12,6 +12,9 @@ export default function ProductCard({ product }) {
     dispatch(toggleFavorite(product.id));
   };
 
+  const handleDelete = () => {
+    dispatch(deleteProduct(product.id));
+  }
   return (
     <div
       style={{
@@ -65,6 +68,21 @@ export default function ProductCard({ product }) {
         Editar
         </button>
       </Link>
+
+        <button
+          onClick={handleDelete}
+          style={{
+            marginTop: "0.5rem",
+            padding: "0.3rem 0.6rem",
+            cursor: "pointer",
+            borderRadius: "4px",
+            border: "1px solid #dc3545",
+            backgroundColor: "#dc3545",
+            color: "white",
+          }}
+        >
+          Eliminar
+        </button>
 
       <label
         style={{
