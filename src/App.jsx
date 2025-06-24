@@ -1,24 +1,65 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
-import Home from './pages/Home.jsx'; // Tu página actual con el listado
-import ProductDetail from './pages/ProductDetail.jsx';
-import Favorites from './pages/Favorites.jsx';
-import ProductForm from './components/ProductForm.jsx';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
+import ProductDetail from "./pages/ProductDetail";
+import ProductForm from "./components/ProductForm";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import PrivateRoute from "./router/PrivateRoute";
 
 function App() {
   return (
     <>
-      <Navbar /> {/* El menú de navegación será visible en todas las páginas */}
+      <Navbar />
       <main className="container">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/product/:productId" element={<ProductDetail />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/create-product" element={<ProductForm />} />
-          <Route path="/edit-product/:productId" element={<ProductForm />} />
-          {/* Puedes añadir una ruta para Not Found */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
+          {/* Rutas públicas */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Rutas privadas */}
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/favorites"
+            element={
+              <PrivateRoute>
+                <Favorites />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/product/:productId"
+            element={
+              <PrivateRoute>
+                <ProductDetail />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/create-product"
+            element={
+              <PrivateRoute>
+                <ProductForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-product/:productId"
+            element={
+              <PrivateRoute>
+                <ProductForm />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </main>
     </>
