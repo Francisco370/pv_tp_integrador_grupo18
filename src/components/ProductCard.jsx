@@ -3,7 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, toggleFavorite } from "../redux/productsSlice";
 import { Link } from "react-router-dom";
 
-export default function ProductCard({ product }) {
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
+const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.products.favorites);
   const isFavorite = favorites.includes(product.id);
@@ -14,93 +23,45 @@ export default function ProductCard({ product }) {
 
   const handleDelete = () => {
     dispatch(deleteProduct(product.id));
-  }
+  };
+
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "1rem",
-        width: "220px",
-        textAlign: "center",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-        position: "relative",
-      }}
-    >
-      <img
-        src={product.image}
+    <Card sx={{ maxWidth: 345, margin: 2, position: "relative" }}>
+      <CardMedia
+        component="img"
+        height="140"
+        image={product.image}
         alt={product.title}
-        style={{ width: "100px", height: "100px", objectFit: "contain" }}
+        sx={{ objectFit: "contain", padding: 1, backgroundColor: "#f5f5f5" }}
       />
-      <h4 style={{ fontSize: "1rem", margin: "0.5rem 0" }}>
-        {product.title.length > 40 ? product.title.slice(0, 40) + "..." : product.title}
-      </h4>
-      <p style={{ fontWeight: "bold", margin: 0 }}>${product.price}</p>
-
-      <Link to={`/product/${product.id}`}>
-        <button
-          style={{
-            marginTop: "0.5rem",
-            padding: "0.3rem 0.6rem",
-            cursor: "pointer",
-            borderRadius: "4px",
-            border: "1px solid #007bff",
-            backgroundColor: "#007bff",
-            color: "white",
-          }}
-        >
-          Ver más detalles
-        </button>
-      </Link>
-      
-      <Link to={`/edit-product/${product.id}`}>
-        <button
-          style={{
-          marginTop: "0.5rem",
-          padding: "0.3rem 0.6rem",
-          cursor: "pointer",
-          borderRadius: "4px",
-          border: "1px solid #28a745",
-          backgroundColor: "#28a745",
-          color: "white",
-      }}
-        >
-        Editar
-        </button>
-      </Link>
-
-        <button
-          onClick={handleDelete}
-          style={{
-            marginTop: "0.5rem",
-            padding: "0.3rem 0.6rem",
-            cursor: "pointer",
-            borderRadius: "4px",
-            border: "1px solid #dc3545",
-            backgroundColor: "#dc3545",
-            color: "white",
-          }}
-        >
+      <CardContent>
+        <Typography gutterBottom variant="h6" component="div" noWrap>
+          {product.title}
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary">
+          ${product.price}
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ justifyContent: "space-between" }}>
+        <Button size="small" component={Link} to={`/product/${product.id}`}>
+          Ver detalles
+        </Button>
+        <Button size="small" color="success" component={Link} to={`/edit-product/${product.id}`}>
+          Editar
+        </Button>
+        <Button size="small" color="error" onClick={handleDelete}>
           Eliminar
-        </button>
-
-      <label
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          cursor: "pointer",
-          userSelect: "none",
-        }}
-      >
-        <input
-          type="checkbox"
+        </Button>
+        <Checkbox
           checked={isFavorite}
           onChange={handleFavoriteChange}
-          style={{ marginRight: "5px" }}
+          icon={<FavoriteIcon />}
+          checkedIcon={<FavoriteIcon color="error" />}
+          sx={{ position: "absolute", top: 8, right: 8 }}
         />
-        ❤️
-      </label>
-    </div>
+      </CardActions>
+    </Card>
   );
-}
+};
+
+export default ProductCard;
