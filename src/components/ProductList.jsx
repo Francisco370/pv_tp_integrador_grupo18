@@ -1,27 +1,16 @@
 import React from "react";
 import ProductCard from "./ProductCard";
+import Grid from "@mui/material/Grid";
 
 const ProductList = ({ products }) => {
-  if (!products.length) {
-    return <p style={{ textAlign: "center", marginTop: "2rem" }}>
-      No hay productos para mostrar.
-    </p>;
-  }
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "1rem",
-        justifyContent: "center",
-        marginTop: "2rem",
-      }}
-    >
+    <Grid container spacing={2} justifyContent="center">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+          <ProductCard product={product} />
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 };
 

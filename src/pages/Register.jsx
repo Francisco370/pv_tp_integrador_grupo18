@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
+
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -14,6 +20,8 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [generalError, setGeneralError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +37,7 @@ const Register = () => {
     };
 
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Correo invalido";
+      newErrors.email = "Correo inválido";
       valid = false;
     }
 
@@ -49,13 +57,15 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setGeneralError("");
+
     if (!validate()) return;
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const userExists = users.some((user) => user.email === formData.email);
 
     if (userExists) {
-      alert("El correo ya está registrado.");
+      setGeneralError("El correo ya está registrado.");
       return;
     }
 
@@ -72,47 +82,79 @@ const Register = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "2rem auto" }}>
-      <h2>Registro</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Correo electrónico:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <p style={{ color: "red" }}>{errors.email}</p>
-        </div>
-        <div>
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <p style={{ color: "red" }}>{errors.password}</p>
-        </div>
-        <div>
-          <label>Confirmar contraseña:</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-          <p style={{ color: "red" }}>{errors.confirmPassword}</p>
-        </div>
-        <button type="submit" style={{ marginTop: "1rem" }}>
-          Registrarse
-        </button>
-      </form>
-    </div>
+    <Box
+      sx={{
+        maxWidth: 400,
+        mx: "auto",
+        mt: 6,
+        p: 3,
+        boxShadow: 3,
+        borderRadius: 2,
+        backgroundColor: "background.paper",
+      }}
+      component="form"
+      onSubmit={handleSubmit}
+      noValidate
+    >
+      <Typography variant="h4" component="h2" textAlign="center" color="text.primary" 
+      sx={{fontFamily: "Poppins, sans-serif", fontWeight: "bold", letterSpacing: "0.5px",mb: 2,}}>
+        Registro
+      </Typography>
+
+      {generalError && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {generalError}
+        </Alert>
+      )}
+
+      <TextField
+        label="Correo electrónico"
+        name="email"
+        type="email"
+        fullWidth
+        margin="normal"
+        value={formData.email}
+        onChange={handleChange}
+        error={Boolean(errors.email)}
+        helperText={errors.email}
+        required
+      />
+
+      <TextField
+        label="Contraseña"
+        name="password"
+        type="password"
+        fullWidth
+        margin="normal"
+        value={formData.password}
+        onChange={handleChange}
+        error={Boolean(errors.password)}
+        helperText={errors.password}
+        required
+      />
+
+      <TextField
+        label="Confirmar contraseña"
+        name="confirmPassword"
+        type="password"
+        fullWidth
+        margin="normal"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        error={Boolean(errors.confirmPassword)}
+        helperText={errors.confirmPassword}
+        required
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        fullWidth
+        sx={{ mt: 3 }}
+      >
+        Registrarse
+      </Button>
+    </Box>
   );
 };
 
