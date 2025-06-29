@@ -14,8 +14,26 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ padding: "1rem", backgroundColor: "#f0f0f0", marginBottom: "1rem" }}>
-      <ul style={{ display: "flex", listStyle: "none", gap: "1rem", margin: 0, padding: 0 }}>
+    <nav
+      style={{
+        padding: "1rem",
+        backgroundColor: "#f0f0f0",
+        marginBottom: "1rem",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap"
+      }}
+    >
+      <ul
+        style={{
+          display: "flex",
+          listStyle: "none",
+          gap: "1rem",
+          margin: 0,
+          padding: 0,
+        }}
+      >
         <li><Link to="/">Inicio</Link></li>
         <li><Link to="/favorites">Favoritos</Link></li>
         <li><Link to="/create-product">Crear Producto</Link></li>
@@ -26,12 +44,16 @@ const Navbar = () => {
           </>
         )}
       </ul>
+
       {user && (
-        <div style={{ float: "right" }}>
+        <div>
           <span>Bienvenido, {user.email}</span>
           <button
             onClick={handleLogout}
-            style={{ marginLeft: "1rem", cursor: "pointer" }}
+            style={{
+              marginLeft: "1rem",
+              cursor: "pointer",
+            }}
           >
             Cerrar sesión
           </button>

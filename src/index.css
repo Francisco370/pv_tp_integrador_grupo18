@@ -25,7 +25,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column; /* para que navbar y main estén en columna */
   min-width: 320px;
   min-height: 100vh;
 }
