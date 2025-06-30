@@ -1,33 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  products: [],     // Productos traídos de la API
-  favorites: [],    // Array con IDs de productos favoritos
-  selectedProduct: null, // Producto seleccionado para detalle
+  products: [],     // Productos traídos de la API o creados
+  favorites: [],    // IDs de productos marcados como favoritos
+  selectedProduct: null, // Producto mostrado en detalle
 };
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    // Guarda los productos obtenidos de la API
+    // Carga productos desde API (sin duplicar)
     setProducts(state, action) {
       const apiProducts = action.payload;
-
-      // Filtrar los productos que ya están cargados para no duplicarlos
       const existingIds = state.products.map(p => p.id);
       const newApiProducts = apiProducts.filter(p => !existingIds.includes(p.id));
-
-      // Agrega solo los productos nuevos
       state.products = [...state.products, ...newApiProducts];
     },
 
-    // Guarda el producto seleccionado para detalle
+    // Guarda producto seleccionado
     setProductDetail(state, action) {
       state.selectedProduct = action.payload;
     },
 
-    // Alterna entre favorito/no favorito
+    // Alternar favorito
     toggleFavorite(state, action) {
       const id = action.payload;
       const isFavorite = state.favorites.includes(id);
@@ -38,25 +34,32 @@ const productsSlice = createSlice({
       }
     },
 
-    // Elimina un producto del array (por id)
+    // Eliminar producto
     deleteProduct(state, action) {
       const id = action.payload;
       state.products = state.products.filter(product => product.id !== id);
-      state.favorites = state.favorites.filter(favId => favId !== id); // también lo saca de favoritos
+      state.favorites = state.favorites.filter(favId => favId !== id);
     },
 
-    // Edita un producto por id
+    // Editar producto (asegura que tenga rating)
     updateProduct(state, action) {
-      const updatedProduct = action.payload;
+      const updatedProduct = {
+        ...action.payload,
+        rating: action.payload.rating || { rate: 0, count: 0 },
+      };
       const index = state.products.findIndex(p => p.id === updatedProduct.id);
       if (index !== -1) {
         state.products[index] = updatedProduct;
       }
     },
 
-    // Agrega un producto nuevo
+    // Agregar nuevo producto (asegura que tenga rating)
     addProduct(state, action) {
-      state.products.push(action.payload);
+      const product = {
+        ...action.payload,
+        rating: action.payload.rating || { rate: 0, count: 0 },
+      };
+      state.products.push(product);
     },
   },
 });

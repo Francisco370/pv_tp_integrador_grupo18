@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, updateProduct } from "../redux/productsSlice";
 import { useNavigate, useParams } from "react-router-dom";
+
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const ProductForm = () => {
   const dispatch = useDispatch();
@@ -42,17 +45,41 @@ const ProductForm = () => {
     e.preventDefault();
 
     if (productId) {
-      dispatch(updateProduct({ id: Number(productId), ...formData }));
+      const existingRating = existingProduct?.rating || { rate: 0, count: 0 };
+      dispatch(updateProduct({ id: Number(productId), ...formData, rating: existingRating }));
     } else {
-      dispatch(addProduct(formData));
+      const newProduct = {
+        ...formData,
+        id: Date.now(),
+        rating: {
+          rate: 0,
+          count: 0,
+        },
+      };
+      dispatch(addProduct(newProduct));
     }
 
     navigate("/");
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 600, margin: "2rem auto" }}>
-      <h2>{productId ? "Editar Producto" : "Crear Producto"}</h2>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        maxWidth: 600,
+        mx: "auto",
+        mt: 4,
+        p: 3,
+        boxShadow: 3,
+        borderRadius: 2,
+        backgroundColor: "background.paper",
+      }}
+    >
+      <Typography variant="h5" component="h2" mb={2} textAlign="center">
+        {productId ? "Editar Producto" : "Crear Producto"}
+      </Typography>
+
       <TextField
         label="Título"
         name="title"
@@ -101,10 +128,11 @@ const ProductForm = () => {
         required
         margin="normal"
       />
-      <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+
+      <Button variant="contained" type="submit" fullWidth sx={{ mt: 2 }}>
         {productId ? "Actualizar" : "Crear"}
       </Button>
-    </form>
+    </Box>
   );
 };
 
